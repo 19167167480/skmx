@@ -1,0 +1,127 @@
+ 
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯净页面</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://file.moyublog.com/d/file/2024-01-25/d5a93ea6195fc9b64f57678b4180d4e4.jpg'); /* 默认PC壁纸 */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .search-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 80%;
+            max-width: 500px; /* 默认最大宽度 */
+            height: 36px;
+            padding: 6px 12px;
+            font-size: 16px;
+            border: 1px solid #b8b8b8;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            box-sizing: border-box;
+            background-color: transparent; /* 设置搜索框背景为透明 */
+        }
+
+        .search-submit {
+            width: 100px;
+            height: 36px;
+            background-color: #3385ff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        /* 媒体查询，针对PC屏幕 */
+        @media (min-width: 769px) {
+            .search-input {
+                max-width: 700px; /* 进一步增加PC端搜索框的最大宽度 */
+            }
+        }
+
+        /* 媒体查询，针对手机屏幕 */
+        @media (max-width: 768px) {
+            body {
+                background-image: url('mobile-wallpaper.jpg'); /* 手机壁纸 */
+            }
+
+            .search-input {
+                width: 70%; /* 在手机上减少搜索框宽度 */
+            }
+
+            .search-submit {
+                width: 80px; /* 在手机上减少搜索按钮宽度 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-form">
+        <input type="text" id="search-input" class="search-input" placeholder="请输入关键词或网址">
+        <button id="search-submit" class="search-submit">进入</button>
+    </div>
+    <div class="search-engine-selector">
+        <select id="search-engine">
+            <option value="google">谷歌</option>
+            <option value="baidu">百度</option>
+            <option value="360">360</option>
+        </select>
+    </div>
+
+    <script>
+        document.getElementById('search-submit').addEventListener('click', function() {
+            var input = document.getElementById('search-input').value.trim();
+            var searchEngine = document.getElementById('search-engine').value;
+            var searchUrl = '';
+
+            if (!input) {
+                alert('内容不能为空');
+                return false;
+            }
+
+            // 检查是否为IPv4或IPv6地址
+            var ipv4Pattern = /^(?:\d{1,3}\.){3}\d{1,3}$/;
+            var ipv6Pattern = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
+
+            if (ipv4Pattern.test(input) || ipv6Pattern.test(input)) {
+                window.location.href = 'http://' + input;
+            } else if (input.includes('.') && input.split('.').length > 1) {
+                // 检查是否包含点，并且点的后缀有文字
+                window.location.href = 'http://' + input;
+            } else {
+                // 默认为搜索
+                switch (searchEngine) {
+                    case 'google':
+                        searchUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
+                        break;
+                    case 'baidu':
+                        searchUrl = 'https://www.baidu.com/s?wd=' + encodeURIComponent(input);
+                        break;
+                    case '360':
+                        searchUrl = 'https://www.so.com/s?q=' + encodeURIComponent(input);
+                        break;
+                }
+                window.location.href = searchUrl;
+            }
+        });
+    </script>
+</body>
+</html>
+ 
